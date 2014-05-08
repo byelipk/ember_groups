@@ -1,5 +1,9 @@
 EmberGroups::Application.routes.draw do
   root "home#index"
+
+  resources :users, only: [:index, :show]
+  resources :groups, only: [:index, :show]
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

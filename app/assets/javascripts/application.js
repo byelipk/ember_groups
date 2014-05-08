@@ -19,6 +19,6 @@
 //= require ./app
 
 // for more details see: http://emberjs.com/guides/application/
-App = Ember.Application.create();
+window.App = Ember.Application.create();
 
 //= require_tree .
