@@ -9,8 +9,9 @@ very specific feature or concept. The purpose of this app is to learn how to
 allow users to create or delete groups, and add and remove other users from
 the group.  
 
-#### Data Model
+## Data Model
 
+#### ActiveRecord
 This is the essence of the backend data model. `Membership` serves as a "join table".
 A `Group` instance may query for its unique members like so: `group.members`. While
 a `User` instance can do this: `user.working_groups`.
@@ -30,6 +31,7 @@ a `User` instance can do this: `user.working_groups`.
       belongs_to :group
     end
 
+### ActiveModel::Serializers
 Both the Group model and the User model are serialized using `ActiveModel::Serialzer`.
 I've only left in the methods which serialize the membership associations, as we
 will use this data to create arrays of unique users and unique groups on the
@@ -42,6 +44,53 @@ front end.
     class UserSerializer < ActiveModel::Serializer
       has_many :memberships, embed: :ids, include: true
     end
+
+### Ember-Data
+Ember-Data is currently in beta. It serves almost like a client-side ORM, but it
+utilises the concept of a data store. Ember-Data handles the persistence and
+synchronization of your data between the client and the server.
+
+We're basically going to mimick our the associations we have on the back end to
+the front end. This means we will have 3 models: one for `User`, one for `Group`,
+and one for `Membership` that will represent the join table. Here is how we do that:
+
+    App.User = DS.Model.extend({
+      memberships: DS.hasMany('membership'),
+      workingGroups: function() {
+        var memberships = this.get('memberships');
+        var workingGroups = memberships.getEach('group');
+
+        return groups ;
+      }.property('memberships')
+    });
+
+    App.Group = DS.Model.extend({
+      memberships: DS.hasMany('membership'),
+      members: function() {
+        var memberships = this.get('memberships');
+        var members = memberships.getEach('user');
+
+        return members ;
+      }.property('memberships')
+    });
+
+    App.Membership = DS.Model.extend({
+      user: DS.belongsTo('user'),
+      group: DS.belongsTo('group')
+    });
+
+A `User` can query for an array of the unique groups they are a part of by
+calling the `workingGroups` property - a computed function which uses the return
+value of calling `memberships` to generate an array of unique group objects.
+
+Likewise, all a `Group` must do to know its unique members is to call the
+`members` property - also a computed function which operates on the other side
+of the association to generate an array of users unique to that group instance.
+
+You can type these commands into your browser console after initializing the `store`.
+
+    App.User.store.find('workingGroups')
+    App.Group.store.find('members')
 
 ###### MIT License
 
