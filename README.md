@@ -15,33 +15,33 @@ This is the essence of the backend data model. `Membership` serves as a "join ta
 A `Group` instance may query for its unique members like so: `group.members`. While
 a `User` instance can do this: `user.working_groups`.
 
-  class Group < ActiveRecord::Base
-    has_many :memberships
-    has_many :members, through: :memberships, source: :user
-  end
+    class Group < ActiveRecord::Base
+      has_many :memberships
+      has_many :members, through: :memberships, source: :user
+    end
 
-  class User < ActiveRecord::Base
-    has_many :memberships
-    has_many :working_groups, through: :memberships, source: :group
-  end
+    class User < ActiveRecord::Base
+      has_many :memberships
+      has_many :working_groups, through: :memberships, source: :group
+    end
 
-  class Membership < ActiveRecord::Base
-    belongs_to :user
-    belongs_to :group
-  end
+    class Membership < ActiveRecord::Base
+      belongs_to :user
+      belongs_to :group
+    end
 
 Both the Group model and the User model are serialized using `ActiveModel::Serialzer`.
 I've only left in the methods which serialize the membership associations, as we
 will use this data to create arrays of unique users and unique groups on the
 front end.
 
-  class GroupSerializer < ActiveModel::Serializer
-    has_many :memberships, embed: :ids, include: true
-  end
+    class GroupSerializer < ActiveModel::Serializer
+      has_many :memberships, embed: :ids, include: true
+    end
 
-  class UserSerializer < ActiveModel::Serializer
-    has_many :memberships, embed: :ids, include: true
-  end
+    class UserSerializer < ActiveModel::Serializer
+      has_many :memberships, embed: :ids, include: true
+    end
 
 ###### MIT License
 
