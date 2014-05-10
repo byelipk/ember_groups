@@ -8,8 +8,10 @@
   </tr>
   {{#each group in model}}
   <tr>
-      <td>{{group.name}}</td>
-      <td>{{group.founder.name}}</td>
+      <td>{{#link-to 'groups.show' group.id}}{{group.name}}{{/link-to}}</td>
+      <td>{{#link-to 'users.show' group.founder.id}}
+        <span class="glyphicon glyphicon-user"></span> {{group.founder.name}}
+        {{/link-to}}</td>
       <td>{{group.memberCount}}</td>
   </tr>
   {{/each}}
