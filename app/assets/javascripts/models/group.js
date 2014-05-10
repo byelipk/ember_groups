@@ -10,6 +10,10 @@ App.Group = DS.Model.extend({
     var memberships = this.get('memberships');
     var members = memberships.getEach('user');
     return members ;
-  }.property('memberships')
+  }.property('memberships'),
+
+  memberCount: function() {
+    return this.get('members.length');
+  }.property('members')
 
 });
