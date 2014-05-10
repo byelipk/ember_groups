@@ -5,9 +5,11 @@ App.Group = DS.Model.extend({
   private: DS.attr('boolean'),
   founder: DS.belongsTo('user'),
   memberships: DS.hasMany('membership'),
+
   members: function() {
     var memberships = this.get('memberships');
     var members = memberships.getEach('user');
     return members ;
   }.property('memberships')
+
 });
