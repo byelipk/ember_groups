@@ -1,12 +1,18 @@
 <h1>GroupsIndex</h1>
 
-{{#each group in model}}
-  <h3>{{group.name}}
-    <span class="text-muted"><small><em>by</em> {{group.founder.name}}</small></span>
-  </h3>
-
-  <h5>This group has {{membersCount}} active members</h5>
-
-{{/each}}
+<table class="table table-striped">
+  <tr>
+    <th>Name</th>
+    <th>Founder</th>
+    <th>Members</th>
+  </tr>
+  {{#each group in model}}
+  <tr>
+      <td>{{group.name}}</td>
+      <td>{{group.founder.name}}</td>
+      <td>{{membersCount}}</td>
+  </tr>
+  {{/each}}
+</table>
 
 {{outlet}}
