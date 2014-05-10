@@ -5,10 +5,20 @@ App.User = DS.Model.extend({
   email: DS.attr('string'),
   groups: DS.hasMany('group'),
   memberships: DS.hasMany('membership'),
-  
+
   workingGroups: function() {
     var memberships = this.get('memberships');
     var groups = memberships.getEach('group');
     return groups ;
-  }.property('memberships')
+  }.property('memberships'),
+
+  groupCount: function() {
+    var count = this.get('groups.length');
+    
+    if (count === 0) {
+      count = "User has not started any groups"
+    }
+
+    return count ;
+  }.property('groups')
 });

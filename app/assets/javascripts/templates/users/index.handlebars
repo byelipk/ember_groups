@@ -1,5 +1,18 @@
-<h1>UsersIndex</h1>
+<h1>Users</h1>
 
-<p>Your content here.</p>
+<table class="table table-striped">
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Groups Started</th>
+  </tr>
+  {{#each user in model}}
+  <tr>
+      <td>{{user.name}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.groupCount}}</td>
+  </tr>
+  {{/each}}
+</table>
 
 {{outlet}}
